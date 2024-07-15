@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.manager import BaseManager
+
 
 class Class(models.Model):
     clas_id = models.SmallIntegerField()
@@ -11,5 +13,7 @@ class Class(models.Model):
     meeting_days = models.CharField(max_length=20)
     class_rep = models.CharField(max_length=20)
     class_capacity = models.SmallIntegerField()
+
+    objects: BaseManager['Class']
 
 # Create your models here.

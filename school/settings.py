@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'student',
     'course',
     'teacher',
-    'class',
+    'classes',
+    'classperiod',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -79,13 +81,18 @@ WSGI_APPLICATION = 'school.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE':'django.db.backends.postgresql',
+        'NAME':'mydatabase',
+        'USER':'myuser',
+        'PASSWORD':'mypassword',
+        'HOST':'localhost',
+        'PORT':'5432',
     }
 }
 
 
-# Password validation
+# Password validationpip install psycopg2-binary
+
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
