@@ -1,6 +1,9 @@
 from django.db import models
 from django.db.models.manager import BaseManager
 
+from course.models import Course
+from classes.models import Class
+
 class Student(models.Model):
     firstname = models.CharField(max_length=20)
     lastname = models.CharField(max_length=20)
@@ -9,6 +12,8 @@ class Student(models.Model):
     date_of_birth = models.DateField()
     country = models.CharField(max_length=20)
     bio = models.TextField()
+    courses = models.ManyToManyField(Course)
+    classe = models.ManyToManyField(Class)
 
     objects: BaseManager['Student']
 

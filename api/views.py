@@ -16,6 +16,13 @@ from rest_framework import status
 class StudentListView(APIView):
     def get(self,request):
         students= Student.objects.all()
+        firstname= request.query_params.get("firstname")
+        if firstname:
+            students= students.filter(firstname=firstname)
+
+        country = request.query_params.get("country")
+        if country:
+            students= students.filter(country=country)
         serializer= StudentSerializer(students,many=True)
         return Response(serializer.data)
     
@@ -50,6 +57,50 @@ class StudentDetailView(APIView):
         student = Student.objects.get(id = id)
         student.delete()
         return Response(status=status.HTTP_202_ACCEPTED)
+    
+    def enroll(self,student,course_id):
+        course = Course.objects.get(id=course_id)
+        student.courses.add(course)
+  
+
+    def unenroll(self,student,course_id):
+        course = Course.objects.get(id= course_id)
+        student.courses.remove(course)
+   
+
+    def post(self,request,id):
+        student=Student.objects.get(id=id)
+        action = request.data.get("action")
+        if action== "unenroll":
+            course_id=request.data.get("course")
+            self.unenroll(student,course_id)
+        
+
+        if action== "enroll":
+            course_id = request.data.get("course")
+            self.enroll(student,course_id)
+        return Response(status.HTTP_202_ACCEPTED)
+    
+    def enrollclass(self,student,clas_id):
+        classe = Class.objects.get(id=clas_id)
+        student.classes.add(classe)
+
+    def unenrollclass(self,student,clas_id):
+        classe = Class.objects.get(id= clas_id)
+        student.courses.remove(classe)
+
+    def assign(self,request,id):
+        student=Student.objects.get(id=id)
+        action = request.data.get("action")
+        if action== "unenrollclass":
+            clas_id =request.data.get("class")
+            self.unenrollclass(student,clas_id)
+        
+
+        if action== "enrollclass":
+            clas_id = request.data.get("class")
+            self.enrollclass(student,clas_id)
+        return Response(status.HTTP_202_ACCEPTED)
     
 
 class TeacherListView(APIView):
