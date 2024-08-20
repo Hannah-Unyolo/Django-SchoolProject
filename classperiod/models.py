@@ -1,4 +1,5 @@
 from django.db import models
+# from course.models import Course
 from django.db.models.manager import BaseManager
 
 
@@ -13,6 +14,8 @@ class Classperiod(models.Model):
     trainer_name = models.CharField(max_length=30)
     trainers_assistant_name = models.CharField(max_length=30)
     number_of_hours = models.PositiveSmallIntegerField()
+
+    # courses = models.ManyToManyField(Course)
 
     objects: BaseManager['Classperiod']
 

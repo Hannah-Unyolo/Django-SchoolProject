@@ -11,6 +11,11 @@ from .serializers import StudentSerializer
 from .serializers import ClassperiodSerializer
 from .serializers import ClassSerializer
 from .serializers import CourseSerializer
+from .serializers import MinimalStudentSerializer
+from .serializers import MinimalTeacherSerializer
+from .serializers import MinimalCourseSerializer
+from .serializers import MinimalClassperiodSerializer
+from .serializers import MinimalClassSerializer
 from rest_framework import status
 
 class StudentListView(APIView):
@@ -23,7 +28,7 @@ class StudentListView(APIView):
         country = request.query_params.get("country")
         if country:
             students= students.filter(country=country)
-        serializer= StudentSerializer(students,many=True)
+        serializer= MinimalStudentSerializer(students,many=True)
         return Response(serializer.data)
     
     def post(self,request):
@@ -115,7 +120,7 @@ class StudentDetailView(APIView):
 class TeacherListView(APIView):
     def get(self,request):
         teachers= Teacher.objects.all()
-        serializer = TeacherSerializer(teachers,many=True)
+        serializer = MinimalTeacherSerializer(teachers,many=True)
         return Response(serializer.data)
     
     def post(self,request):
@@ -126,6 +131,17 @@ class TeacherListView(APIView):
         
         else:
             return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+        
+    
+    def assignTeacher(self,request):
+        serializer = TeacherSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status= status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+       
+    
         
 
 class TeacherDetailView(APIView):
@@ -154,7 +170,7 @@ class TeacherDetailView(APIView):
 class ClassperiodListView(APIView):
     def get(self,request):
         classperiods= Classperiod.objects.all()
-        serializer= ClassperiodSerializer(classperiods,many=True)
+        serializer= MinimalClassperiodSerializer(classperiods,many=True)
         return Response(serializer.data)
     
     def post(self,request):
@@ -192,7 +208,7 @@ class ClassperiodDetailView(APIView):
 class ClassListView(APIView):
     def get(self,request):
         classes= Class.objects.all()
-        serializer= ClassSerializer(classes,many=True)
+        serializer= MinimalClassSerializer(classes,many=True)
         return Response(serializer.data)
     
     def post(self,request):
@@ -231,7 +247,7 @@ class ClassDetailView(APIView):
 class CourseListView(APIView):
     def get(self,request):
         courses= Course.objects.all()
-        serializer= CourseSerializer(courses,many=True)
+        serializer= MinimalCourseSerializer(courses,many=True)
         return Response(serializer.data)
     
     def post(self,request):

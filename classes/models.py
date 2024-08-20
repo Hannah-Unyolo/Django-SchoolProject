@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.manager import BaseManager
+# from student.models import Student
 
 
 class Class(models.Model):
@@ -13,6 +14,8 @@ class Class(models.Model):
     meeting_days = models.CharField(max_length=20)
     class_rep = models.CharField(max_length=20)
     class_capacity = models.SmallIntegerField()
+
+    # students= models.ManyToManyField(Student)
 
     objects: BaseManager['Class']
 
